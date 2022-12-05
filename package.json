@@ -12,6 +12,16 @@
   "main": "./dist/utils.cjs",
   "module": "./dist/utils.module.js",
   "unpkg": "./dist/utils.umd.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**.js*",
+    "dist/**/*.ts",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usesummit/utils.git"
+  },
   "scripts": {
     "build": "microbundle",
     "dev": "microbundle watch",
