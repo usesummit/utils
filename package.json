@@ -19,9 +19,6 @@
     "test:coverage": "NODE_ENV=test jest --coverage",
     "test:watch": "NODE_ENV=test jest --coverage --watch"
   },
-  "dependencies": {
-    "uuid": "^9.0.0"
-  },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.19.6",
     "@babel/preset-env": "^7.20.2",
