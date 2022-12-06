@@ -7,3 +7,4 @@ Came out of the need for re-using some helper methods across multiple codebases 
 ## Contents
 
 -   `parseHumanReadableNumber` can parse numbers like `1.52MM` and `1,234,456.78` to floats
+-   `getIdentifier` generates and stores a unique identifier so you can anonymously identify users or sessions
