@@ -3,7 +3,7 @@ import { test, expect } from '@jest/globals';
 import parseHumanReadableNumber from './parseHumanReadableNumber';
 
 test('does not require a leading zero for decimals', () => {
-    expect(parseHumanReadableNumber('.5')).toBe(0.5);
+    expect(parseHumanReadableNumber('.5')).toBeCloseTo(0.5);
     expect(parseHumanReadableNumber('.5K')).toBe(500);
     expect(parseHumanReadableNumber('.123MM')).toBe(123000);
     expect(parseHumanReadableNumber('.123456MM')).toBe(123456);
@@ -59,7 +59,7 @@ test('parses thousands separators', () => {
     expect(parseHumanReadableNumber('1,000,000,000,000')).toBe(
         1_000_000_000_000
     );
-    expect(parseHumanReadableNumber('4.2')).toBe(4.2);
+    expect(parseHumanReadableNumber('4.2')).toBeCloseTo(4.2);
     expect(() => parseHumanReadableNumber('4,2')).toThrow();
     expect(parseHumanReadableNumber('1337_133')).toBe(1337_133);
     expect(parseHumanReadableNumber('1,332.512K')).toBe(1332512);
@@ -154,7 +154,7 @@ test('parses human readable negative numbers', () => {
     expect(parseHumanReadableNumber('-1b')).toBe(-1_000_000_000);
     expect(parseHumanReadableNumber('-1T')).toBe(-1_000_000_000_000);
     expect(parseHumanReadableNumber('-1t')).toBe(-1_000_000_000_000);
-    expect(parseHumanReadableNumber('-4.2')).toBe(-4.2);
+    expect(parseHumanReadableNumber('-4.2')).toBeCloseTo(-4.2);
     expect(parseHumanReadableNumber('-4.2K')).toBe(-4200);
     expect(parseHumanReadableNumber('-4.2k')).toBe(-4200);
     expect(parseHumanReadableNumber('-4.2M')).toBe(-4200);
