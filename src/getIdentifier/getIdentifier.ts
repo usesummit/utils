@@ -1,8 +1,10 @@
-import { v4 as uuid } from 'uuid';
-
 type CacheGetter = () => string;
 type CacheSetter = (newValue: string | undefined) => void;
 type CacheResetter = () => void;
+
+const uuid = () => {
+    return globalThis.crypto.randomUUID();
+};
 
 const defaultStorage = (function () {
     if (globalThis.sessionStorage) {
