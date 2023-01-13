@@ -8,9 +8,8 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/utils.module.js",
-      "require": "./dist/utils.cjs",
-      "default": "./dist/utils.modern.js"
+      "import": "./dist/utils.modern.js",
+      "require": "./dist/utils.cjs"
     }
   },
   "main": "./dist/utils.cjs",
