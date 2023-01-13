@@ -6,8 +6,12 @@
   "type": "module",
   "source": "src/index.ts",
   "exports": {
-    "require": "./dist/utils.cjs",
-    "default": "./dist/utils.modern.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/utils.module.js",
+      "require": "./dist/utils.cjs",
+      "default": "./dist/utils.modern.js"
+    }
   },
   "main": "./dist/utils.cjs",
   "module": "./dist/utils.module.js",
