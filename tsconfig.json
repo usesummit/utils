@@ -3,6 +3,6 @@
   "compilerOptions": {
     "module": "ESNext",
     "target": "ESNext",
-    "moduleResolution": "node"
+    "moduleResolution": "nodenext"
   }
 }
