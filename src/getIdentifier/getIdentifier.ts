@@ -5,10 +5,6 @@ type CacheSetter = (newValue: string | undefined) => void;
 type CacheResetter = () => void;
 
 const defaultStorage = (function () {
-    if (globalThis.sessionStorage) {
-        return globalThis.sessionStorage;
-    }
-
     let store: Record<string, string> = {};
 
     return {
@@ -36,29 +32,34 @@ const defaultStorage = (function () {
 export default function getIdentifier(
     key: string,
     initialValue?: string,
-    storage: Storage = defaultStorage
+    storage?: Storage
 ): [CacheGetter, CacheSetter, CacheResetter] {
     let inMemory = initialValue || uuid();
 
+    const actualStorage = (() => {
+        if (!storage) {
+            return defaultStorage;
+        }
+
+        try {
+            storage.setItem('test', 'test');
+            storage.removeItem('test');
+
+            return storage;
+        } catch (e) {
+            return defaultStorage;
+        }
+    })();
+
     return [
         () => {
-            try {
-                const fromStorage = storage.getItem(key);
+            const fromStorage = actualStorage.getItem(key);
 
-                if (fromStorage) {
-                    return fromStorage;
-                }
-
-                storage.setItem(key, inMemory);
-            } catch (e) {
-                try {
-                    // Just in case the error wasn't related to the storage's availability,
-                    // we might be able to recover so we can link some sessions together
-                    storage.setItem(key, inMemory);
-                } catch (saveError) {
-                    // Do nothing
-                }
+            if (fromStorage) {
+                return fromStorage;
             }
+
+            actualStorage.setItem(key, inMemory);
 
             return inMemory;
         },
@@ -66,30 +67,17 @@ export default function getIdentifier(
             if (newValue) {
                 inMemory = newValue;
 
-                try {
-                    storage.setItem(key, newValue);
-                } catch (e) {
-                    // Do nothing
-                }
+                actualStorage.setItem(key, newValue);
             } else {
                 inMemory = uuid();
-
-                try {
-                    storage.removeItem(key);
-                } catch (e) {
-                    // Do nothing
-                }
+                actualStorage.removeItem(key);
             }
         },
         () => {
             inMemory = initialValue || uuid();
 
-            try {
-                storage.removeItem(key);
-                // The next run of the getter will store the new value
-            } catch (e) {
-                // Do nothing
-            }
+            actualStorage.removeItem(key);
+            // The next run of the getter will store the new value
         },
     ];
 }
