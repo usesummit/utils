@@ -1,6 +1,6 @@
 {
   "name": "@usesummit/utils",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "author": "Pieter Beulque <pieter.beulque@usesummit.com>",
   "license": "MIT",
   "type": "module",
