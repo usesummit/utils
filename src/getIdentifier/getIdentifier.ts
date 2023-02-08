@@ -32,7 +32,7 @@ const defaultStorage = (function () {
 export default function getIdentifier(
     key: string,
     initialValue?: string,
-    storage?: Storage
+    storage?: 'localStorage' | 'sessionStorage' | Storage
 ): [CacheGetter, CacheSetter, CacheResetter] {
     let inMemory = initialValue || uuid();
 
@@ -42,10 +42,22 @@ export default function getIdentifier(
         }
 
         try {
-            storage.setItem('test', 'test');
-            storage.removeItem('test');
+            const storageObject = (() => {
+                if (storage === 'localStorage') {
+                    return globalThis.localStorage;
+                }
 
-            return storage;
+                if (storage === 'sessionStorage') {
+                    return globalThis.sessionStorage;
+                }
+
+                return storage;
+            })();
+
+            storageObject.setItem('test', 'test');
+            storageObject.removeItem('test');
+
+            return storageObject;
         } catch (e) {
             return defaultStorage;
         }
