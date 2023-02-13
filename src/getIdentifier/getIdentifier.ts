@@ -36,7 +36,7 @@ export default function getIdentifier(
 ): [CacheGetter, CacheSetter, CacheResetter] {
     let inMemory = initialValue || uuid();
 
-    const actualStorage = (() => {
+    let actualStorage = (() => {
         if (!storage) {
             return defaultStorage;
         }
@@ -64,6 +64,7 @@ export default function getIdentifier(
     })();
 
     return [
+        // Getter
         () => {
             const fromStorage = actualStorage.getItem(key);
 
@@ -71,20 +72,36 @@ export default function getIdentifier(
                 return fromStorage;
             }
 
-            actualStorage.setItem(key, inMemory);
+            try {
+                actualStorage.setItem(key, inMemory);
+            } catch (e) {
+                // This is most probably a quota error
+                // Let's revert to the default in-memory storage
+                actualStorage = defaultStorage;
+                actualStorage.setItem(key, inMemory);
+            }
 
             return inMemory;
         },
+
+        // Setter
         (newValue) => {
             if (newValue) {
                 inMemory = newValue;
 
-                actualStorage.setItem(key, newValue);
+                try {
+                    actualStorage.setItem(key, newValue);
+                } catch (e) {
+                    actualStorage = defaultStorage;
+                    actualStorage.setItem(key, inMemory);
+                }
             } else {
                 inMemory = uuid();
                 actualStorage.removeItem(key);
             }
         },
+
+        // Resetter
         () => {
             inMemory = initialValue || uuid();
 
