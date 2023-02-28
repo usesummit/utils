@@ -1,3 +1,5 @@
+> 🚚 This codebase has been moved to our mono-repo. As a result it's no longer open-source, but it's still available on NPM for everyone to use.
+
 # Summit JS Utils
 
 Useful methods for handling numbers, mostly.
